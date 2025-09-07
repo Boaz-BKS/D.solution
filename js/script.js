@@ -78,6 +78,55 @@ const translations = {
         // Footer
         footerText: "© 2023 D.Solution. All rights reserved.",
 
+        // Service categories
+        forStudents: "For Students",
+        forProfessionals: "For Professionals",
+        forBusinessOwners: "For Business Owners",
+
+        // Category descriptions
+        studentsDesc: "Academic and digital services that make school life easier and more successful.",
+        professionalsDesc: "Polished digital materials that boost credibility and visibility in your career.",
+        businessDesc: "Essential digital tools and setup services to grow your business online.",
+
+        // Student services
+        internshipReport: "Internship Report Crafting",
+        internshipDesc: "Polished. Professional. Personalized. Turn your real-world training into a professionally written document.",
+        proofreading: "Proofreading & Editing",
+        proofreadingDesc: "We check your grammar, fix sentence structure, and format your work according to academic guidelines.",
+        cvAssistance: "CV & Cover Letter Assistance",
+        cvDesc: "Let us write or enhance your documents to help you stand out for scholarships, internships, and job opportunities.",
+        applicationSupport: "Application Form Support",
+        applicationDesc: "Guidance through online university or scholarship applications, including uploading documents.",
+
+        // Professional services
+        cvDesign: "Professional CV Design",
+        cvDesignDesc: "Clean, modern CVs that highlight your skills and experience in a visually appealing format.",
+        coverLetter: "Custom Cover Letter Writing",
+        coverLetterDesc: "Personalized cover letters tailored to your target job or role.",
+
+        // Business services
+        websiteSetup: "Business Website Setup",
+        websiteDesc: "A simple, clean website with mobile compatibility, contact forms, service lists, and more.",
+        socialMedia: "Social Media Page Creation",
+        socialMediaDesc: "We create or upgrade your Facebook, Instagram, or LinkedIn pages with branded visuals.",
+        branding: "Logo & Branding Design",
+        brandingDesc: "Unique logos, social banners, and business card designs for consistent identity.",
+
+        // Package deals
+        packageDeals: "Looking for a Package Deal?",
+        packageDesc: "Ask us about custom service bundles for students, professionals, or entrepreneurs. We'll build a solution that fits your goals and your budget.",
+
+        // Contact section
+        getStarted: "Need Help Getting Started?",
+        getStartedDesc: "We're here to attend. Whether you need a single service or full support across multiple areas, contact us for free consultation.",
+
+        // Package deal and help sections
+        packageTitle: "Vous cherchez un Forfait?",
+        packageDesc: "Demandez-nous des bundles de services personnalisés pour les étudiants, professionnels ou entrepreneurs. Nous construirons une solution qui correspond à vos objectifs et à votre budget.",
+        helpTitle: "Besoin d'Aide pour Commencer?",
+        helpDesc: "Nous sommes là pour vous assister. Que vous ayez besoin d'un service unique ou d'un support complet dans plusieurs domaines, contactez-nous pour une consultation gratuite.",
+        contactUsBtn: "Contactez-nous Aujourd'hui",
+
         // Portfolio
         ourWork: "Our Work"
     },
@@ -106,6 +155,11 @@ const translations = {
         forStudents: "Pour les Étudiants",
         forProfessionals: "Pour les Professionnels",
         forBusinessOwners: "Pour les Propriétaires d'Entreprises",
+
+        // Category descriptions
+        studentsDesc: "Services académiques et numériques qui rendent la vie scolaire plus facile et plus réussie.",
+        professionalsDesc: "Matériaux numériques polis qui boostent la crédibilité et la visibilité dans votre carrière.",
+        businessDesc: "Outils numériques essentiels et services de configuration pour développer votre entreprise en ligne.",
 
         // Student services
         internshipReport: "Rédaction de Rapport de Stage",
@@ -164,73 +218,6 @@ const translations = {
 
 let currentLang = localStorage.getItem('lang') || 'en';
 
-// Services data
-const services = [
-    {
-        id: 1,
-        category: 'For Students',
-        title: 'Internship Report Crafting',
-        desc: 'Polished. Professional. Personalized. Turn your real-world training into a professionally written document.',
-        price: 'Starting from $50'
-    },
-    {
-        id: 2,
-        category: 'For Students',
-        title: 'Proofreading & Editing',
-        desc: 'We check your grammar, fix sentence structure, and format your work according to academic guidelines.',
-        price: 'Starting from $20'
-    },
-    {
-        id: 3,
-        category: 'For Students',
-        title: 'CV & Cover Letter Assistance',
-        desc: 'Let us write or enhance your documents to help you stand out for scholarships, internships, and job opportunities.',
-        price: 'Starting from $30'
-    },
-    {
-        id: 4,
-        category: 'For Students',
-        title: 'Application Form Support',
-        desc: 'Guidance through online university or scholarship applications, including uploading documents.',
-        price: 'Starting from $25'
-    },
-    {
-        id: 5,
-        category: 'For Professionals',
-        title: 'Professional CV Design',
-        desc: 'Clean, modern CVs that highlight your skills and experience in a visually appealing format.',
-        price: 'Starting from $40'
-    },
-    {
-        id: 6,
-        category: 'For Professionals',
-        title: 'Custom Cover Letter Writing',
-        desc: 'Personalized cover letters tailored to your target job or role.',
-        price: 'Starting from $25'
-    },
-    {
-        id: 7,
-        category: 'For Business Owners',
-        title: 'Business Website Setup',
-        desc: 'A simple, clean website with mobile compatibility, contact forms, service lists, and more.',
-        price: 'Starting from $200'
-    },
-    {
-        id: 8,
-        category: 'For Business Owners',
-        title: 'Social Media Page Creation',
-        desc: 'We create or upgrade your Facebook, Instagram, or LinkedIn pages with branded visuals.',
-        price: 'Starting from $50'
-    },
-    {
-        id: 9,
-        category: 'For Business Owners',
-        title: 'Logo & Branding Design',
-        desc: 'Unique logos, social banners, and business card designs for consistent identity.',
-        price: 'Starting from $100'
-    }
-];
-
 // Function to update language
 function updateLanguage(lang) {
     currentLang = lang;
@@ -285,6 +272,41 @@ function updateLanguage(lang) {
     // Update services page content
     if (document.querySelector('#services h2')) document.querySelector('#services h2').textContent = translations[lang]?.ourServices || translations['en'].ourServices;
     if (document.querySelector('#services p')) document.querySelector('#services p').textContent = translations[lang]?.servicesDesc || translations['en'].servicesDesc;
+
+    // Update package deal and help sections
+    if (document.querySelector('#package-title')) document.querySelector('#package-title').textContent = translations[lang]?.packageTitle || translations['en'].packageTitle;
+    if (document.querySelector('#package-desc')) document.querySelector('#package-desc').textContent = translations[lang]?.packageDesc || translations['en'].packageDesc;
+    if (document.querySelector('#help-title')) document.querySelector('#help-title').textContent = translations[lang]?.helpTitle || translations['en'].helpTitle;
+    if (document.querySelector('#help-desc')) document.querySelector('#help-desc').textContent = translations[lang]?.helpDesc || translations['en'].helpDesc;
+
+    // Update category cards on services page
+    const studentsCategory = document.querySelector('#students-category');
+    if (studentsCategory) studentsCategory.textContent = translations[lang]?.forStudents || translations['en'].forStudents;
+
+    const professionalsCategory = document.querySelector('#professionals-category');
+    if (professionalsCategory) professionalsCategory.textContent = translations[lang]?.forProfessionals || translations['en'].forProfessionals;
+
+    const businessCategory = document.querySelector('#business-category');
+    if (businessCategory) businessCategory.textContent = translations[lang]?.forBusinessOwners || translations['en'].forBusinessOwners;
+
+    // Update category descriptions
+    const studentsCard = document.querySelector('#students-category').closest('.card-body');
+    if (studentsCard) {
+        const studentsDesc = studentsCard.querySelector('.card-text');
+        if (studentsDesc) studentsDesc.textContent = translations[lang]?.studentsDesc || translations['en'].studentsDesc;
+    }
+
+    const professionalsCard = document.querySelector('#professionals-category').closest('.card-body');
+    if (professionalsCard) {
+        const professionalsDesc = professionalsCard.querySelector('.card-text');
+        if (professionalsDesc) professionalsDesc.textContent = translations[lang]?.professionalsDesc || translations['en'].professionalsDesc;
+    }
+
+    const businessCard = document.querySelector('#business-category').closest('.card-body');
+    if (businessCard) {
+        const businessDesc = businessCard.querySelector('.card-text');
+        if (businessDesc) businessDesc.textContent = translations[lang]?.businessDesc || translations['en'].businessDesc;
+    }
 
     // Re-populate services with new language if on services page
     if (document.getElementById('services-catalog')) {
@@ -343,108 +365,153 @@ function updateLanguage(lang) {
 // Populate services
 function populateServices() {
     const catalog = document.getElementById('services-catalog');
-    const categories = {};
-    services.forEach(service => {
-        if (!categories[service.category]) {
-            categories[service.category] = [];
-        }
-        categories[service.category].push(service);
-    });
 
-    for (const [category, serviceList] of Object.entries(categories)) {
+    // Define service structure with translation keys
+    const serviceCategories = [
+        {
+            key: 'forStudents',
+            services: [
+                { titleKey: 'internshipReport', descKey: 'internshipDesc', price: 'Starting from $50' },
+                { titleKey: 'proofreading', descKey: 'proofreadingDesc', price: 'Starting from $20' },
+                { titleKey: 'cvAssistance', descKey: 'cvDesc', price: 'Starting from $30' },
+                { titleKey: 'applicationSupport', descKey: 'applicationDesc', price: 'Starting from $25' }
+            ]
+        },
+        {
+            key: 'forProfessionals',
+            services: [
+                { titleKey: 'cvDesign', descKey: 'cvDesignDesc', price: 'Starting from $40' },
+                { titleKey: 'coverLetter', descKey: 'coverLetterDesc', price: 'Starting from $25' }
+            ]
+        },
+        {
+            key: 'forBusinessOwners',
+            services: [
+                { titleKey: 'websiteSetup', descKey: 'websiteDesc', price: 'Starting from $200' },
+                { titleKey: 'socialMedia', descKey: 'socialMediaDesc', price: 'Starting from $50' },
+                { titleKey: 'branding', descKey: 'brandingDesc', price: 'Starting from $100' }
+            ]
+        }
+    ];
+
+    serviceCategories.forEach((category, categoryIndex) => {
         const categoryDiv = document.createElement('div');
         categoryDiv.className = 'mb-5';
 
-        // Translate category title
-        let translatedCategory = category;
-        if (category === 'For Students') translatedCategory = translations[currentLang]?.forStudents || translations['en'].forStudents;
-        if (category === 'For Professionals') translatedCategory = translations[currentLang]?.forProfessionals || translations['en'].forProfessionals;
-        if (category === 'For Business Owners') translatedCategory = translations[currentLang]?.forBusinessOwners || translations['en'].forBusinessOwners;
+        // Get translated category title
+        const categoryTitle = translations[currentLang]?.[category.key] || translations['en'][category.key];
+        categoryDiv.innerHTML = `<h3 class="text-center mb-4">${categoryTitle}</h3>`;
 
-        categoryDiv.innerHTML = `<h3 class="text-center mb-4">${translatedCategory}</h3>`;
         const row = document.createElement('div');
         row.className = 'row';
-        serviceList.forEach(service => {
+
+        category.services.forEach((service, serviceIndex) => {
             const card = document.createElement('div');
             card.className = 'col-md-4 mb-4';
 
-            // Translate service content
-            let translatedTitle = service.title;
-            let translatedDesc = service.desc;
+            // Get translated service content
+            const serviceTitle = translations[currentLang]?.[service.titleKey] || translations['en'][service.titleKey];
+            const serviceDesc = translations[currentLang]?.[service.descKey] || translations['en'][service.descKey];
 
-            // Student services
-            if (service.title === 'Internship Report Crafting') {
-                translatedTitle = translations[currentLang]?.internshipReport || translations['en'].internshipReport;
-                translatedDesc = translations[currentLang]?.internshipDesc || translations['en'].internshipDesc;
-            }
-            if (service.title === 'Proofreading & Editing') {
-                translatedTitle = translations[currentLang]?.proofreading || translations['en'].proofreading;
-                translatedDesc = translations[currentLang]?.proofreadingDesc || translations['en'].proofreadingDesc;
-            }
-            if (service.title === 'CV & Cover Letter Assistance') {
-                translatedTitle = translations[currentLang]?.cvAssistance || translations['en'].cvAssistance;
-                translatedDesc = translations[currentLang]?.cvDesc || translations['en'].cvDesc;
-            }
-            if (service.title === 'Application Form Support') {
-                translatedTitle = translations[currentLang]?.applicationSupport || translations['en'].applicationSupport;
-                translatedDesc = translations[currentLang]?.applicationDesc || translations['en'].applicationDesc;
-            }
-
-            // Professional services
-            if (service.title === 'Professional CV Design') {
-                translatedTitle = translations[currentLang]?.cvDesign || translations['en'].cvDesign;
-                translatedDesc = translations[currentLang]?.cvDesignDesc || translations['en'].cvDesignDesc;
-            }
-            if (service.title === 'Custom Cover Letter Writing') {
-                translatedTitle = translations[currentLang]?.coverLetter || translations['en'].coverLetter;
-                translatedDesc = translations[currentLang]?.coverLetterDesc || translations['en'].coverLetterDesc;
-            }
-
-            // Business services
-            if (service.title === 'Business Website Setup') {
-                translatedTitle = translations[currentLang]?.websiteSetup || translations['en'].websiteSetup;
-                translatedDesc = translations[currentLang]?.websiteDesc || translations['en'].websiteDesc;
-            }
-            if (service.title === 'Social Media Page Creation') {
-                translatedTitle = translations[currentLang]?.socialMedia || translations['en'].socialMedia;
-                translatedDesc = translations[currentLang]?.socialMediaDesc || translations['en'].socialMediaDesc;
-            }
-            if (service.title === 'Logo & Branding Design') {
-                translatedTitle = translations[currentLang]?.branding || translations['en'].branding;
-                translatedDesc = translations[currentLang]?.brandingDesc || translations['en'].brandingDesc;
-            }
+            // Create unique service ID
+            const serviceId = categoryIndex * 10 + serviceIndex + 1;
 
             card.innerHTML = `
-                <div class="card service-card" data-service-id="${service.id}">
+                <div class="card service-card" data-service-id="${serviceId}">
                     <div class="card-body">
-                        <h5 class="card-title">${translatedTitle}</h5>
-                        <p class="card-text">${translatedDesc}</p>
+                        <h5 class="card-title">${serviceTitle}</h5>
+                        <p class="card-text">${serviceDesc}</p>
                         <p class="text-primary fw-bold">${service.price}</p>
                     </div>
                 </div>
             `;
             row.appendChild(card);
         });
+
         categoryDiv.appendChild(row);
         catalog.appendChild(categoryDiv);
-    }
+    });
+
+    // Add package deal and contact sections
+    const packageDiv = document.createElement('div');
+    packageDiv.className = 'text-center mt-5';
+    const packageTitle = translations[currentLang]?.packageDeals || translations['en'].packageDeals;
+    const packageDesc = translations[currentLang]?.packageDesc || translations['en'].packageDesc;
+    const getStartedTitle = translations[currentLang]?.getStarted || translations['en'].getStarted;
+    const getStartedDesc = translations[currentLang]?.getStartedDesc || translations['en'].getStartedDesc;
+
+    packageDiv.innerHTML = `
+        <h4>${packageTitle}</h4>
+        <p>${packageDesc}</p>
+        <h4>${getStartedTitle}</h4>
+        <p>${getStartedDesc}</p>
+    `;
+    catalog.appendChild(packageDiv);
 }
 
 // Show service modal
 function showServiceModal(serviceId) {
-    const service = services.find(s => s.id === serviceId);
     const modalTitle = document.getElementById('serviceModalTitle');
     const modalBody = document.getElementById('serviceModalBody');
 
     if (modalTitle && modalBody) {
-        modalTitle.textContent = service.title;
-        modalBody.innerHTML = `
-            <p><strong>${service.category}</strong></p>
-            <p>${service.desc}</p>
-            <p><strong>Price: ${service.price}</strong></p>
-        `;
-        const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
-        modal.show();
+        // Find service data based on serviceId
+        let serviceData = null;
+        let categoryName = '';
+
+        const serviceCategories = [
+            {
+                key: 'forStudents',
+                services: [
+                    { titleKey: 'internshipReport', descKey: 'internshipDesc', price: 'Starting from $50' },
+                    { titleKey: 'proofreading', descKey: 'proofreadingDesc', price: 'Starting from $20' },
+                    { titleKey: 'cvAssistance', descKey: 'cvDesc', price: 'Starting from $30' },
+                    { titleKey: 'applicationSupport', descKey: 'applicationDesc', price: 'Starting from $25' }
+                ]
+            },
+            {
+                key: 'forProfessionals',
+                services: [
+                    { titleKey: 'cvDesign', descKey: 'cvDesignDesc', price: 'Starting from $40' },
+                    { titleKey: 'coverLetter', descKey: 'coverLetterDesc', price: 'Starting from $25' }
+                ]
+            },
+            {
+                key: 'forBusinessOwners',
+                services: [
+                    { titleKey: 'websiteSetup', descKey: 'websiteDesc', price: 'Starting from $200' },
+                    { titleKey: 'socialMedia', descKey: 'socialMediaDesc', price: 'Starting from $50' },
+                    { titleKey: 'branding', descKey: 'brandingDesc', price: 'Starting from $100' }
+                ]
+            }
+        ];
+
+        let currentId = 1;
+        for (const category of serviceCategories) {
+            for (const service of category.services) {
+                if (currentId === serviceId) {
+                    serviceData = service;
+                    categoryName = translations[currentLang]?.[category.key] || translations['en'][category.key];
+                    break;
+                }
+                currentId++;
+            }
+            if (serviceData) break;
+        }
+
+        if (serviceData) {
+            const serviceTitle = translations[currentLang]?.[serviceData.titleKey] || translations['en'][serviceData.titleKey];
+            const serviceDesc = translations[currentLang]?.[serviceData.descKey] || translations['en'][serviceData.descKey];
+
+            modalTitle.textContent = serviceTitle;
+            modalBody.innerHTML = `
+                <p><strong>${categoryName}</strong></p>
+                <p>${serviceDesc}</p>
+                <p><strong>Price: ${serviceData.price}</strong></p>
+            `;
+            const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
+            modal.show();
+        }
     }
 }
 
