@@ -556,30 +556,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const accountBtn = document.getElementById('account-btn');
     if (accountBtn) {
-        accountBtn.addEventListener('click', () => {
-            const modal = new bootstrap.Modal(document.getElementById('accountModal'));
-            modal.show();
+        // Check auth status and set button text/behavior
+        if (isAuthenticated()) {
+            accountBtn.textContent = 'Logout';
+            accountBtn.addEventListener('click', handleLogout);
+        } else {
+            accountBtn.addEventListener('click', () => {
+                const modal = new bootstrap.Modal(document.getElementById('accountModal'));
+                modal.show();
+            });
+        }
+    }
+
+    // Modal switch handlers
+    const switchToRegister = document.getElementById('switchToRegister');
+    if (switchToRegister) {
+        switchToRegister.addEventListener('click', () => {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('registerSection').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Register';
         });
     }
 
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            // Simple demo: store in localStorage
-            localStorage.setItem('user', JSON.stringify({ email, password }));
-            alert('Logged in successfully!');
-            bootstrap.Modal.getInstance(document.getElementById('accountModal')).hide();
-        });
-    }
-
-    const registerBtn = document.getElementById('registerBtn');
-    if (registerBtn) {
-        registerBtn.addEventListener('click', () => {
-            // For demo, just alert
-            alert('Registration feature coming soon!');
+    const switchToLogin = document.getElementById('switchToLogin');
+    if (switchToLogin) {
+        switchToLogin.addEventListener('click', () => {
+            document.getElementById('registerSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Login';
         });
     }
 });

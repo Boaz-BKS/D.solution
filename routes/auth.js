@@ -36,17 +36,22 @@ router.post('/signup', [
     check('firstName').notEmpty(),
     check('lastName').notEmpty()
 ], async (req, res) => {
+    console.log('Signup request received:', req.body);
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).redirect('/signup?error=validation');
+        console.log('Validation errors:', errors.array());
+        return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
     }
+    console.log('Validation passed');
 
     const { email, password, firstName, lastName } = req.body;
 
     try {
         let user = await User.findOne({ email });
         if (user) {
-            return res.status(400).redirect('/signup?error=user_exists');
+            console.log('User already exists:', email);
+            return res.status(400).json({ message: 'User already exists' });
         }
 
         user = new User({
@@ -57,16 +62,24 @@ router.post('/signup', [
             isVerified: true
         });
 
+        console.log('About to save user for email:', email);
         await user.save();
+        console.log('User saved successfully');
 
-        req.login(user, (err) => {
-            if (err) {
-                return res.status(500).redirect('/signup?error=login_failed');
+        const token = generateToken(user);
+        res.json({
+            message: 'User registered successfully',
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName
             }
-            res.redirect('/dashboard.html');
         });
     } catch (err) {
-        res.status(500).redirect('/signup?error=server_error');
+        console.error('Signup error:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
@@ -95,8 +108,10 @@ router.get('/verify/:token', async (req, res) => {
 
 // Login
 router.post('/login', passport.authenticate('local'), (req, res) => {
+    const token = generateToken(req.user);
     res.json({
         message: 'Logged in successfully',
+        token,
         user: {
             id: req.user._id,
             email: req.user.email,
@@ -124,37 +139,12 @@ router.get('/facebook/callback', passport.authenticate('facebook', { session: fa
 
 // Dashboard
 router.get('/dashboard', (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.redirect('/login.html');
-    }
     res.sendFile(path.join(__dirname, '../dashboard.html'));
 });
 
-// API dashboard for AJAX calls
-router.get('/api/dashboard', (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    res.json({
-        message: 'Welcome to your dashboard',
-        user: req.user
-    });
-});
-
-// Logout
+// Logout (client-side token clear, but provide endpoint for consistency)
 router.post('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Logout error' });
-        }
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).json({ message: 'Session destroy error' });
-            }
-            res.clearCookie('connect.sid');
-            res.json({ message: 'Logged out successfully' });
-        });
-    });
+    res.json({ message: 'Logged out successfully' });
 });
 
 // Password reset request
@@ -243,6 +233,33 @@ router.post('/reset-password/:token', [
         res.redirect('/login.html?success=password_reset');
     } catch (err) {
         res.status(500).redirect('/reset.html?error=server_error');
+    }
+});
+
+// Profile update
+router.put('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const { firstName, lastName, email } = req.body;
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            { firstName, lastName, email },
+            { new: true, runValidators: true }
+        );
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({
+            message: 'Profile updated successfully',
+            user: {
+                id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName
+            }
+        });
+    } catch (err) {
+        console.error('Profile update error:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
