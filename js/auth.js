@@ -71,7 +71,7 @@ async function handleLogin(e) {
     e.preventDefault();
     
     const email = document.getElementById('email');
-    const password = document.getElementById('loginPassword') || document.getElementById('password');
+    const password = document.getElementById('password');
     if (!email || !password) return alert('Form elements not found');
     const emailVal = email.value;
     const passwordVal = password.value;
@@ -82,22 +82,14 @@ async function handleLogin(e) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email: emailVal, password: passwordVal })
         });
 
         const data = await response.json();
 
         if (response.ok) {
             setToken(data.token);
-            const modal = bootstrap.Modal.getInstance(document.getElementById('accountModal'));
-            if (modal) {
-                modal.hide();
-                // Update nav button
-                const accountBtn = document.getElementById('account-btn');
-                if (accountBtn) accountBtn.textContent = 'Logout';
-            } else {
-                window.location.href = 'dashboard.html';
-            }
+            window.location.href = 'dashboard.html';
         } else {
             alert(data.message || 'Login failed');
         }
@@ -110,10 +102,10 @@ async function handleLogin(e) {
 async function handleRegister(e) {
     e.preventDefault();
     
-    const firstName = document.getElementById('regFirstName');
-    const lastName = document.getElementById('regLastName');
-    const email = document.getElementById('regEmail');
-    const password = document.getElementById('regPassword') || document.getElementById('password');
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
     if (!firstName || !lastName || !email || !password) return alert('Form elements not found');
     const firstNameVal = firstName.value;
     const lastNameVal = lastName.value;
@@ -126,25 +118,14 @@ async function handleRegister(e) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ firstName, lastName, email, password })
+            body: JSON.stringify({ firstName: firstNameVal, lastName: lastNameVal, email: emailVal, password: passwordVal })
         });
 
         const data = await response.json();
 
         if (response.ok) {
             alert(data.message);
-            const modal = bootstrap.Modal.getInstance(document.getElementById('accountModal'));
-            if (modal) {
-                modal.hide();
-                document.getElementById('loginSection').classList.remove('d-none');
-                document.getElementById('registerSection').classList.add('d-none');
-                document.getElementById('modalTitle').textContent = 'Login';
-                // Update nav button
-                const accountBtn = document.getElementById('account-btn');
-                if (accountBtn) accountBtn.textContent = 'Account';
-            } else {
-                window.location.href = 'login.html';
-            }
+            window.location.href = 'login.html';
         } else {
             alert(data.message || 'Registration failed');
         }
@@ -260,51 +241,19 @@ async function loadUserData() {
 document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
 
-    // Handle modal authentication on pages like index.html
-    const accountModal = document.getElementById('accountModal');
+    // Handle account button on non-auth pages (e.g., index.html, services.html)
     const accountBtn = document.getElementById('account-btn');
-    if (accountModal && accountBtn) {
+    if (accountBtn && !currentPath.includes('login') && !currentPath.includes('register') && !currentPath.includes('dashboard') && !currentPath.includes('forgot-password')) {
         // Update button text based on auth status
         if (isAuthenticated()) {
-            accountBtn.textContent = 'Logout';
-        }
-
-        // Account button click handler
-        accountBtn.addEventListener('click', function() {
-            if (isAuthenticated()) {
-                handleLogout();
-            } else {
-                // Show login form by default
-                document.getElementById('loginSection').classList.remove('d-none');
-                document.getElementById('registerSection').classList.add('d-none');
-                document.getElementById('modalTitle').textContent = 'Login';
-                const modal = new bootstrap.Modal(accountModal);
-                modal.show();
-            }
-        });
-
-        // Initialize login form listener
-        showLoginForm();
-
-        // Switch to register
-        const switchToRegister = document.getElementById('switchToRegister');
-        if (switchToRegister) {
-            switchToRegister.addEventListener('click', function() {
-                document.getElementById('loginSection').classList.add('d-none');
-                document.getElementById('registerSection').classList.remove('d-none');
-                document.getElementById('modalTitle').textContent = 'Register';
-                showRegisterForm(); // Add listener if not already
+            accountBtn.textContent = 'Dashboard';
+            accountBtn.addEventListener('click', function() {
+                window.location.href = 'dashboard.html';
             });
-        }
-
-        // Switch to login
-        const switchToLogin = document.getElementById('switchToLogin');
-        if (switchToLogin) {
-            switchToLogin.addEventListener('click', function() {
-                document.getElementById('registerSection').classList.add('d-none');
-                document.getElementById('loginSection').classList.remove('d-none');
-                document.getElementById('modalTitle').textContent = 'Login';
-                showLoginForm(); // Add listener if not already
+        } else {
+            accountBtn.textContent = 'Login';
+            accountBtn.addEventListener('click', function() {
+                window.location.href = 'login.html';
             });
         }
     }
