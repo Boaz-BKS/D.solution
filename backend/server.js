@@ -41,19 +41,18 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/dsolution',
+        mongoUrl: process.env.MONGODB_URI || 'mongodb+srv://boazbukasa10_db_user:Easypassword141020@d-solution.madhgb7.mongodb.net/?retryWrites=true&w=majority&appName=D-solution',
         collectionName: 'sessions'
     }),
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 24 hours
 }));
 
-app.use(express.static('public'));
-app.use(express.static('.'));
+app.use(express.static('frontend'));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/dsolution', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://boazbukasa10_db_user:Easypassword141020@d-solution.madhgb7.mongodb.net/?retryWrites=true&w=majority&appName=D-solution', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverSelectionTimeoutMS: 5000,

@@ -33,55 +33,63 @@ passport.use(new LocalStrategy({
 }));
 
 // Google OAuth strategy
-console.log('Configuring GoogleStrategy');
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/api/auth/google/callback'
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        let user = await User.findOne({ googleId: profile.id });
-        if (!user) {
-            user = new User({
-                email: profile.emails[0].value,
-                firstName: profile.name.givenName,
-                lastName: profile.name.familyName,
-                googleId: profile.id,
-                isVerified: true
-            });
-            await user.save();
+if (process.env.GOOGLE_CLIENT_ID) {
+    console.log('Configuring GoogleStrategy');
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: '/api/auth/google/callback'
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            let user = await User.findOne({ googleId: profile.id });
+            if (!user) {
+                user = new User({
+                    email: profile.emails[0].value,
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    googleId: profile.id,
+                    isVerified: true
+                });
+                await user.save();
+            }
+            return done(null, user);
+        } catch (err) {
+            return done(err);
         }
-        return done(null, user);
-    } catch (err) {
-        return done(err);
-    }
-}));
+    }));
+} else {
+    console.log('GoogleStrategy skipped: GOOGLE_CLIENT_ID not set');
+}
 
 // Facebook OAuth strategy
-console.log('Configuring FacebookStrategy');
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/api/auth/facebook/callback',
-    profileFields: ['id', 'emails', 'name']
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        let user = await User.findOne({ facebookId: profile.id });
-        if (!user) {
-            user = new User({
-                email: profile.emails[0].value,
-                firstName: profile.name.givenName,
-                lastName: profile.name.familyName,
-                facebookId: profile.id,
-                isVerified: true
-            });
-            await user.save();
+if (process.env.FACEBOOK_APP_ID) {
+    console.log('Configuring FacebookStrategy');
+    passport.use(new FacebookStrategy({
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: '/api/auth/facebook/callback',
+        profileFields: ['id', 'emails', 'name']
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            let user = await User.findOne({ facebookId: profile.id });
+            if (!user) {
+                user = new User({
+                    email: profile.emails[0].value,
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    facebookId: profile.id,
+                    isVerified: true
+                });
+                await user.save();
+            }
+            return done(null, user);
+        } catch (err) {
+            return done(err);
         }
-        return done(null, user);
-    } catch (err) {
-        return done(err);
-    }
-}));
+    }));
+} else {
+    console.log('FacebookStrategy skipped: FACEBOOK_APP_ID not set');
+}
 
 // Serialize user
 console.log('Passport serializeUser configured');
